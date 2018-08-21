@@ -84,7 +84,7 @@ function buildPolicies(db)
        }
     }).on('close', () => {
       console.log('Have a great day!');
-      return();
+      return;
     });
 }
 
