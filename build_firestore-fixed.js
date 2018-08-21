@@ -46,6 +46,7 @@ function buildClients(db)
 }
 
 
+/*
 function buildPolicies(db)
 {
     var rlpol = readline.createInterface({
@@ -82,7 +83,18 @@ function buildPolicies(db)
        }
     });
 }
+*/
 
+function buildPolicies(db, id)
+{
+    var addDoc = db.collection('clients').doc(id).collection('policy').add({type: 'Homeowner', added: Date.now()} )
+      .then (ref => {
+        console.log('Added policy with ID: ', ref.id, "for doc", id);
+      })
+      .catch(function(error) {
+          console.error("Error writing document: ", error);
+      });
+}
 
 function BuildClientObj(splitLine)
 {
