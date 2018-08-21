@@ -81,10 +81,9 @@ function buildPolicies(db)
         .catch(err => {
           console.error('Error getting documents', err);
         });
-      }
-
-    });
+      });
 }
+
 
 function BuildClientObj(splitLine)
 {
