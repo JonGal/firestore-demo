@@ -60,18 +60,22 @@ function buildPolicies(db)
 
       if (addThisObj)
       {
-        addThisObj['added'] = Date.now();
-        var queryRef = db.collection('clients').where('name', '==', addThisObj['name']).get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            console.log(doc.id, '=>', doc.data());
-            var addDoc = db.collection('clients').doc(doc.id).collection('policy').add(addThisObj)
-              .then (thisref => {
-                console.log('Added policy with ID: ', thisref.id, " to ", doc.id);
-              })
-              .catch(function(error) {
-                  console.error("Error writing document: ", error);
-              });
+        addObj['added'] = Date.now();
+        var queryDoc = db.collection('clients').where('name', '==', addObj['name']).get()
+          .then(ref => {
+              let docs = ref.docs;
+              for (let doc of docs) {
+                var addDoc = db.collection('clients').doc(doc.id).collection('policy').add(addObj)
+                  .then (ref => {
+                    console.log('Added policy with ID: ', ref.id, "for doc", doc.id);
+                  })
+                  .catch(function(error) {
+                      console.error("Error writing document: ", error);
+                  });
+              }
+          })
+          .catch(function(error) {
+              console.error("Error finding document: ", error);
           });
         })
         .catch(err => {
