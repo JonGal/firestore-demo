@@ -86,6 +86,7 @@ function buildPolicies(db)
       console.log('Have a great day!');
       return;
     });
+    return;
 }
 
 
