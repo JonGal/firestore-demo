@@ -17,6 +17,7 @@ db.settings(settings);
 
 var dbColl = db.collection('clients');
 buildClients(db);
+buildPolicies(db);
 
 function buildClients(db)
 {
@@ -42,8 +43,6 @@ function buildClients(db)
           });
       }
       
-    }).on('close', () => {
-        buildPolicies(db);
     });
 }
 
@@ -82,11 +81,7 @@ function buildPolicies(db)
               console.error("Error finding document: ", error);
           });
        }
-    }).on('close', () => {
-      console.log('Have a great day!');
-      return;
     });
-    return;
 }
 
 
