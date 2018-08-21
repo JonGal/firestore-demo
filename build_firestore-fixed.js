@@ -35,7 +35,7 @@ function buildClients(db)
         var addDoc = db.collection('clients').add(addObj)
           .then(ref => {
             console.log('Added document with ID: ', ref.id);
-            buildPolicies(ref.id);
+            buildPolicies(db, ref.id);
           })
           .catch(function(error) {
               console.error("Error writing document: ", error);
@@ -46,7 +46,7 @@ function buildClients(db)
 }
 
 
-function buildPolicies(id)
+function buildPolicies(db, id)
 {
     var rl = readline.createInterface({
       //input: fs.createReadStream('sample.txt'),
@@ -60,6 +60,7 @@ function buildPolicies(id)
 
       if (addThisObj)
       {
+          console.log("Adding policy for?", id);
         addThisObj['added'] = Date.now();
         var addDoc = db.collection('clients').doc(id).collection('policy').add(addThisObj)
           .then (thisref => {
