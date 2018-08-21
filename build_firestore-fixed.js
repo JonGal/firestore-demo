@@ -56,7 +56,7 @@ function buildPolicies(id)
 
     rl.on('line', (line) => {
       var splitThisLine = line.split('\t');
-      var addThisObj =  BuildPolicyObj(splitLine);
+      var addThisObj =  BuildPolicyObj(splitThisLine);
 
       if (addThisObj)
       {
