@@ -46,7 +46,7 @@ function buildClients(db)
 }
 
 
-function buildPolicies(db, id)
+function buildPolicies(db)
 {
     var rl = readline.createInterface({
       //input: fs.createReadStream('sample.txt'),
@@ -60,15 +60,23 @@ function buildPolicies(db, id)
 
       if (addThisObj)
       {
-          console.log("Adding policy for?", id);
         addThisObj['added'] = Date.now();
-        var addDoc = db.collection('clients').doc(id).collection('policy').add(addThisObj)
-          .then (thisref => {
-            console.log('Added policy with ID: ', thisref.id, " to ", id);
-          })
-          .catch(function(error) {
-              console.error("Error writing document: ", error);
+        var queryRef = dbClients.where('name', '==', addThisObj['name']).get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            console.log(doc.id, '=>', doc.data());
+            var addDoc = db.collection('clients').doc(doc.id).collection('policy').add(addThisObj)
+              .then (thisref => {
+                console.log('Added policy with ID: ', thisref.id, " to ", doc.id);
+              })
+              .catch(function(error) {
+                  console.error("Error writing document: ", error);
+              });
           });
+        })
+        .catch(err => {
+          console.error('Error getting documents', err);
+        });
       }
 
     });
