@@ -42,6 +42,8 @@ function buildClients(db)
           });
       }
       
+    }).on('close', () => {
+        buildPolicies(db);
     });
 }
 
@@ -80,6 +82,9 @@ function buildPolicies(db)
               console.error("Error finding document: ", error);
           });
        }
+    }).on('close', () => {
+      console.log('Have a great day!');
+      return();
     });
 }
 
