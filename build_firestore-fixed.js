@@ -62,8 +62,8 @@ function buildPolicies(id)
       {
         addThisObj['added'] = Date.now();
         var addDoc = db.collection('clients').doc(id).collection('policy').add(addThisObj)
-          .then (ref => {
-            console.log('Added policy with ID: ', ref.id);
+          .then (thisref => {
+            console.log('Added policy with ID: ', thisref.id, " to ", id);
           })
           .catch(function(error) {
               console.error("Error writing document: ", error);
