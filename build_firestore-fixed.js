@@ -17,7 +17,6 @@ db.settings(settings);
 
 var dbColl = db.collection('clients');
 buildClients(db);
-buildPolicies(db);
 
 function buildClients(db)
 {
@@ -36,6 +35,7 @@ function buildClients(db)
         var addDoc = db.collection('clients').add(addObj)
           .then(ref => {
             console.log('Added document with ID: ', ref.id);
+            buildPolicies(db, ref.id);
           })
           .catch(function(error) {
               console.error("Error writing document: ", error);
