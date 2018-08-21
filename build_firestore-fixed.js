@@ -77,11 +77,11 @@ function buildPolicies(db)
           .catch(function(error) {
               console.error("Error finding document: ", error);
           });
-        })
-        .catch(err => {
+       }
+    }) 
+    .catch(err => {
           console.error('Error getting documents', err);
-        });
-      });
+    });
 }
 
 
