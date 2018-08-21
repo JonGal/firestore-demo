@@ -61,6 +61,7 @@ function buildPolicies(db)
       if (addThisObj)
       {
         addThisObj['added'] = Date.now();
+          console.log("Name in Doc:",addThisObj['name'] );
         var queryDoc = db.collection('clients').where('name', '==', addThisObj['name']).get()
           .then(ref => {
               let docs = ref.docs;
