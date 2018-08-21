@@ -48,21 +48,20 @@ function buildClients(db)
 
 function buildPolicies(db)
 {
-    var rl = readline.createInterface({
+    var rlpol = readline.createInterface({
       //input: fs.createReadStream('sample.txt'),
       input: fs.createReadStream('full_policies'),
       crlfDelay: Infinity
     });
 
-    rl.on('line', (line) => {
+    rlpol.on('line', (line) => {
       var splitThisLine = line.split('\t');
-      var addThisObj = {};
-        addThisObj = BuildPolicyObj(splitThisLine);
+      var addThisObj = BuildPolicyObj(splitThisLine);
 
       if (addThisObj)
       {
         addThisObj['added'] = Date.now();
-          console.log("Name in Doc:",addThisObj['name'] );
+        console.log("Name in Doc:",addThisObj['name'] );
         var queryDoc = db.collection('clients').where('name', '==', addThisObj['name']).get()
           .then(ref => {
               let docs = ref.docs;
