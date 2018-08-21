@@ -13,7 +13,7 @@ var db = admin.firestore();
 const settings = {timestampsInSnapshots: true};
 db.settings(settings);
 
-
+var PolicyObjs = BuildPolicyObj();
 
 var dbColl = db.collection('clients');
 buildClients(db);
@@ -35,7 +35,7 @@ function buildClients(db)
         var addDoc = db.collection('clients').add(addObj)
           .then(ref => {
             console.log('Added document with ID: ', ref.id);
-            buildPolicies(db, ref.id);
+            buildPolicies(db, ref.id, addObj);
           })
           .catch(function(error) {
               console.error("Error writing document: ", error);
@@ -85,16 +85,39 @@ function buildPolicies(db)
 }
 */
 
-function buildPolicies(db, id)
+function buildPolicies(db, id, clientObj)
 {
-    var addDoc = db.collection('clients').doc(id).collection('policy').add({type: 'Homeowner', added: Date.now()} )
-      .then (ref => {
-        console.log('Added policy with ID: ', ref.id, "for doc", id);
-      })
-      .catch(function(error) {
-          console.error("Error writing document: ", error);
-      });
+    if (clientObj['name'] in PolicyObj)
+    {
+        var addDoc = db.collection('clients').doc(id).collection('policy').add(PolicyObj[clientObj['name']] )
+          .then (ref => {
+            console.log('Added policy with ID: ', ref.id, "for doc", id);
+          })
+          .catch(function(error) {
+              console.error("Error writing document: ", error);
+          });
+    }
 }
+
+function BuildPolicyArr()
+{
+    var arrPol = [];
+
+    var rlpol = readline.createInterface({
+      //input: fs.createReadStream('sample.txt'),
+      input: fs.createReadStream('full_policies'),
+      crlfDelay: Infinity
+    });
+
+    rlpol.on('line', (line) => {
+      var splitThisLine = line.split('\t');
+      var addThisObj = BuildPolicyObj(splitThisLine);
+      arrPol[addThisObj['name']] = addThisObj;
+    });
+
+    return arrPol;
+}
+
 
 function BuildClientObj(splitLine)
 {
