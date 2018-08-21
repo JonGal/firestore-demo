@@ -17,7 +17,6 @@ db.settings(settings);
 
 var dbColl = db.collection('clients');
 buildClients(db);
-buildPolicies(db);
 
 function buildClients(db)
 {
@@ -36,6 +35,7 @@ function buildClients(db)
         var addDoc = db.collection('clients').add(addObj)
           .then(ref => {
             console.log('Added document with ID: ', ref.id);
+            buildPolicies(ref.id);
           })
           .catch(function(error) {
               console.error("Error writing document: ", error);
@@ -46,7 +46,7 @@ function buildClients(db)
 }
 
 
-function buildPolicies(db)
+function buildPolicies(id)
 {
     var rl = readline.createInterface({
       //input: fs.createReadStream('sample.txt'),
@@ -55,30 +55,21 @@ function buildPolicies(db)
     });
 
     rl.on('line', (line) => {
-      var splitLine = line.split('\t');
-      var addObj =  BuildPolicyObj(splitLine);
+      var splitThisLine = line.split('\t');
+      var addThisObj =  BuildPolicyObj(splitLine);
 
-      if (addObj)
+      if (addThisObj)
       {
-        addObj['added'] = Date.now();
-        var queryDoc = db.collection('clients').where('name', '==', addObj['name']).get()
-          .then(ref => {
-              let docs = ref.docs;
-              for (let doc of docs) {
-                var addDoc = db.collection('clients').doc(doc.id).collection('policy').add(addObj)
-                  .then (ref => {
-                    console.log('Added policy with ID: ', ref.id);
-                  })
-                  .catch(function(error) {
-                      console.error("Error writing document: ", error);
-                  });
-              }
+        addThisObj['added'] = Date.now();
+        var addDoc = db.collection('clients').doc(id).collection('policy').add(addThisObj)
+          .then (ref => {
+            console.log('Added policy with ID: ', ref.id);
           })
           .catch(function(error) {
-              console.error("Error finding document: ", error);
+              console.error("Error writing document: ", error);
           });
       }
-      
+
     });
 }
 
