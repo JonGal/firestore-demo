@@ -67,7 +67,7 @@ function buildPolicies(db)
               for (let doc of docs) {
                 var addDoc = db.collection('clients').doc(doc.id).collection('policy').add(addObj)
                   .then (ref => {
-                    console.log('Added policy with ID: ', ref.id);
+                    console.log('Added policy with ID: ', ref.id, "for doc", doc.id);
                   })
                   .catch(function(error) {
                       console.error("Error writing document: ", error);
