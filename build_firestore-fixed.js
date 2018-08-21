@@ -65,6 +65,7 @@ function buildPolicies(db)
           .then(ref => {
               let docs = ref.docs;
               for (let doc of docs) {
+                  console.log("Found Doc:", doc.id);
                 var addDoc = db.collection('clients').doc(doc.id).collection('policy').add(addThisObj)
                   .then (ref => {
                     console.log('Added policy with ID: ', ref.id, "for doc", doc.id);
