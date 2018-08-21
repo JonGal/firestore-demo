@@ -61,7 +61,7 @@ function buildPolicies(db)
       if (addThisObj)
       {
         addThisObj['added'] = Date.now();
-        var queryRef = dbClients.where('name', '==', addThisObj['name']).get()
+        var queryRef = db.collection('clients').where('name', '==', addThisObj['name']).get()
         .then(snapshot => {
           snapshot.forEach(doc => {
             console.log(doc.id, '=>', doc.data());
