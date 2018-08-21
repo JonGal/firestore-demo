@@ -60,12 +60,12 @@ function buildPolicies(db)
 
       if (addThisObj)
       {
-        addObj['added'] = Date.now();
-        var queryDoc = db.collection('clients').where('name', '==', addObj['name']).get()
+        addThisObj['added'] = Date.now();
+        var queryDoc = db.collection('clients').where('name', '==', addThisObj['name']).get()
           .then(ref => {
               let docs = ref.docs;
               for (let doc of docs) {
-                var addDoc = db.collection('clients').doc(doc.id).collection('policy').add(addObj)
+                var addDoc = db.collection('clients').doc(doc.id).collection('policy').add(addThisObj)
                   .then (ref => {
                     console.log('Added policy with ID: ', ref.id, "for doc", doc.id);
                   })
@@ -78,9 +78,6 @@ function buildPolicies(db)
               console.error("Error finding document: ", error);
           });
        }
-    }) 
-    .catch(err => {
-          console.error('Error getting documents', err);
     });
 }
 
